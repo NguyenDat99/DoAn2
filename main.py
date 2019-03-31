@@ -11,7 +11,7 @@ for i in range(len(x_training)):
     k =ViPosTagger.postagging(ViTokenizer.tokenize(u"%s" %x_training[i]))
     data.append([k[0],k[1]])
 
-print(data[12])
+print(data[5])
 
 #from sklearn.feature_extraction import DictVectorizer
 #X=[{'a':'N'},{'b':'3'},{'c':'3'},{'d':'3'}]
