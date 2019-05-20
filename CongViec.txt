@@ -1,3 +1,0 @@
-31/4/2019 -> 7/4/2019: Tiền xử lý bag-of-words, TF-IDF.
-8/4/2019 -> 14/4/2019: Lựa chọn thuật toán Machine Learning cho Text Classfication.
-15/4/2019 -> 21/4/2019: Kiểm thử.
