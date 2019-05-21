@@ -6,31 +6,7 @@ import DataAdapter as da
 from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
 from pyvi import ViTokenizer, ViPosTagger
-data=da.dataset()
-
-def loaiTru(s):
-    for i in s:
-        if i =='.' or i=='?' or i==',' or i=='0' or i==' ' or i=='1' or i=='2' or i=='3' or i=='4' or i=='5' or i=='6' or i=='7'or i=='8' or i=='9' or i==')'or i=='('or i=='"'or i=='='or i=='>'or i=='<'or i=='&'or i=='^'or i=='*'or i=='%'or i=='#'or i=='$'or i==''or i=='@'or i==':' or i==';':
-            return 0
-    return 1
-
-def locKiTuDacBiet(s):
-    s1=""
-    for i in s:
-        if i!='!' and i !='/' :
-            s1+=i
-    return s1
-
-def lamSachChuoi():
-    dt=data.text
-    for i in range(len(dt)):
-        s=""
-        k=dt[i].split(" ")
-        for j in k:
-            if loaiTru(j)==1:
-                s+=locKiTuDacBiet(j)+" "
-        dt[i]=s
-    return dt
+data=da.dataset(2)
 
 def demTu(dt):
     k =dt.split(" ")
@@ -98,8 +74,16 @@ def tinhTF_IDF(tuDienTF,tuDienIDF):
             if tu_tf==tu_idf:
                 array.append([tu_tf,float(chiSo_tf)*float(chiSo_idf)])
     return np.array(array)
+
+def locTF_IDF(tuDienTF_IDF):
+    array=[]
+    for tu, chiSo in tuDienTF_IDF:
+        if(chiSo>0.2):
+            array.append([tu,chiSo])
+    return np.array(tuDienTF_IDF)
+
 def tuDien():
-    dt=lamSachChuoi()
+    dt=data.text
     tuDien=bag_of_words(dt)
     tuDienTF=tuDien
     tuDienIDF=[]
@@ -111,7 +95,13 @@ def tuDien():
     #tinhIDF
     tuDienIDF=tinhIDF(dt,tuDien)
     #tinhTF_IDF
-    #for i in range(len(tuDienTF)):
-        #tuDienTF_IDF[i]=tinhTF_IDF(tuDienTF[i],tuDienIDF)
+    for i in range(len(tuDienTF)):
+        tuDienTF_IDF[i]=tinhTF_IDF(tuDienTF[i],tuDienIDF)
+    for i in range(len(tuDienTF_IDF)):
+        tuDienTF_IDF[i]=locTF_IDF(tuDienTF_IDF[i])
+
+    print(tuDienTF_IDF[0])
+
+
     print(tinhTF_IDF(tuDienTF[0],tuDienIDF))
 tuDien()

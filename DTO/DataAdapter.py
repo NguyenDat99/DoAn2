@@ -1,55 +1,72 @@
 # coding=utf-8
 import pandas as pd
-csv=pd.read_csv('../DTO/dataset/CSV/data.csv',encoding='utf-8')
+import numpy as np
+csv1=pd.read_csv('../DTO/dataset/CSV/data1.csv',encoding='utf-8')
+csv2=pd.read_csv('../DTO/dataset/CSV/data2.csv',encoding='utf-8')
 from multiprocessing.dummy import Pool as ThreadPool
 
-def getFeature(file,name):
-    return (file[name].values).tolist()
-# def getFeature(file):
-#     return (file.values).tolist()
-def getFeature(name):
-    return (csv[name].values).tolist()
+
+def getFeature1(name):
+    return (csv1[name].values).tolist()
+
+def getFeature2(name):
+    return (csv2[name].values).tolist()
 
 
-def multiprocessing():
+def multiprocessing(k):
     t=['text','label']
     pool = ThreadPool(2)
-    data=pool.map(getFeature,t)
+    if k==1:
+        data=pool.map(getFeature1,t)
+    elif k==2:
+        data=pool.map(getFeature2,t)
     return data
 
+def loaiTru(s):
+    for i in s:
+        if i =='.' or i=='?' or i==',' or i=='0' or i==' ' or i=='1' or i=='2' or i=='3' or i=='4' or i=='5' or i=='6' or i=='7'or i=='8' or i=='9' or i==')'or i=='('or i=='"'or i=='='or i=='>'or i=='<'or i=='&'or i=='^'or i=='*'or i=='%'or i=='#'or i=='$'or i==''or i=='@'or i==':' or i==';':
+            return 0
+    return 1
+
+def locKiTuDacBiet(s):
+    s1=""
+    if s!='href' and s!='class' and s!='hashtag-link' and s!= '\n':
+        for i in range(len(s)):
+            if s[i]!='!' and s[i] !='/'and s[i] !='.'and s[i] !="'":
+                    s1+=s[i]
+    return s1
+
+def lamSachChuoi(text):
+    s=""
+    k=text.split(" ")
+    for j in k:
+        if loaiTru(j)==1:
+            s+=locKiTuDacBiet(j)+" "
+    return s
+
 def ExCSV():
-    array=[]
-    # for i in range(1,300): #35473
-    #     try:
-    #         PosFile1 = pd.read_csv('../DTO/dataset/data_train/pos/%s.txt'%i, sep=" ", header=None)
-    #         print(PosFile1[0])
-    #         array.append([getFeature(PosFile1),1])
-    #     except:
-    #         a=2
-    # for i in range(1,29244):
-    #     try:
-    #         PosFile1 = pd.read_csv('../DTO/dataset/data_train/neg/%s.txt'%i, sep=" ", header=None)
-    #         if PosFile1!=None:
-    #             array.append(getFeature([getFeature(PosFile1),0])
-    #     except:
-    #         a=2
-    # for i in range(1,35467):
-    #     try:
-    #         PosFile1 = pd.read_csv('../DTO/dataset/data_test/pos/%s.txt'%i, sep=" ", header=None)
-    #         if PosFile1!=None:
-    #             array.append(getFeature([getFeature(PosFile1),1]))
-    #     except:
-    #         a=2
-    # for i in range(1,29246):
-    #     try:
-    #         PosFile1 = pd.read_csv('../DTO/dataset/data_test/neg/%s.txt'%i, sep=" ", header=None)
-    #         if PosFile1!=None:
-    #             array.append([getFeature(PosFile1),0])
-    #     except:
-    #         a=2
-    return  array
+    dt=[]
+    for i in range(1,1000): #35473
+        try:
+            file=open('../DTO/dataset/pos/%s.txt'%i,"r")
+            dt.append([lamSachChuoi(file.read()),1])
+            file.close()
+        except:
+            a=2
+    for i in range(1,1000):#29246
+        try:
+            file=open('../DTO/dataset/neg/%s.txt'%i,"r")
+            dt.append([lamSachChuoi(file.read()),0])
+            file.close()
+        except:
+            a=2
+    dt=np.array(dt)
+    df = pd.DataFrame({'text':dt[:,0],'label':dt[:,1]})
+    df.to_csv('../DTO/dataset/CSV/data2.csv',encoding='utf-8',index=False)
+
+#ExCSV()
 class dataset:
-    def __init__(seft):
-        data=multiprocessing()
+    def __init__(seft,k):
+        data=multiprocessing(k)
         seft.text=data[0]
         seft.label=data[1]
