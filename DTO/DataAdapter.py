@@ -5,6 +5,7 @@ csv1=pd.read_csv('../DTO/dataset/CSV/data1.csv',encoding='utf-8')
 csv2=pd.read_csv('../DTO/dataset/CSV/data2.csv',encoding='utf-8')
 from multiprocessing.dummy import Pool as ThreadPool
 
+#67190 Câu
 
 def getFeature1(name):
     return (csv1[name].values).tolist()
@@ -30,7 +31,7 @@ def loaiTru(s):
 
 def locKiTuDacBiet(s):
     s1=""
-    if s!='href' and s!='class' and s!='hashtag-link' and s!= '\n':
+    if s!='href' and s!='class' and s!='hashtag-link' and s!= '\n' and s!='thì' and s!='là'and s!='ở'and s!='đi'and s!='tao'and s!='mày'and s!='cây'and s!='đến'and s!='vừng'and s!='bán'and s!='đồ ăn'and s!='Đồ ăn'and s!='cơm_chiên'and s!='vô'and s!='cách'and s!='đây'and s!='Vị_trí'and s!='bánh_bao'and s!='Kem'and s!='từ'and s!='ngoài'and s!='vô'and s!='của'and s!='xe'and s!='thứ'and s!='hôm'and s!='đó'and s!='kho'and s!='quẹt'and s!='buổi_sáng'and s!='Xe_đẩy'and s!='decor'and s!='i'and s!='o'and s!='đươ'and s!='c'and s!='n'and s!='cu'and s!='_' and s!='service'and s!='Menu' and s!='bad'and s!='ㅠ'and s!='bill'and s!='Matcha'and s!='green'and s!='almond'and s!='chocolate'and s!='PERFECT'and s!='kpop'and s!='SG'and s!='upstair'and s!='driving'and s!='':
         for i in range(len(s)):
             if s[i]!='!' and s[i] !='/'and s[i] !='.'and s[i] !="'":
                     s1+=s[i]
@@ -44,16 +45,17 @@ def lamSachChuoi(text):
             s+=locKiTuDacBiet(j)+" "
     return s
 
+
 def ExCSV():
     dt=[]
-    for i in range(1,1000): #35473
+    for i in range(1,25): #35473
         try:
             file=open('../DTO/dataset/pos/%s.txt'%i,"r")
             dt.append([lamSachChuoi(file.read()),1])
             file.close()
         except:
             a=2
-    for i in range(1,1000):#29246
+    for i in range(1,25):#29246
         try:
             file=open('../DTO/dataset/neg/%s.txt'%i,"r")
             dt.append([lamSachChuoi(file.read()),0])

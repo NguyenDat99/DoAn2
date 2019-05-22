@@ -3,9 +3,8 @@ import sys
 sys.path.append('../DTO/')
 import pandas as pd
 import DataAdapter as da
-from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
-from pyvi import ViTokenizer, ViPosTagger
+
 data=da.dataset(2)
 
 def demTu(dt):
@@ -78,16 +77,16 @@ def tinhTF_IDF(tuDienTF,tuDienIDF):
 def locTF_IDF(tuDienTF_IDF):
     array=[]
     for tu, chiSo in tuDienTF_IDF:
-        if(chiSo>0.2):
+        if(float(chiSo)>0.2):
             array.append([tu,chiSo])
-    return np.array(tuDienTF_IDF)
+    return np.array(array)
 
-def tuDien():
+def xuLyTF_IDF():
     dt=data.text
     tuDien=bag_of_words(dt)
     tuDienTF=tuDien
     tuDienIDF=[]
-    tuDienTF_IDF=tuDien
+    tuDienTF_IDF=[]
     #tinhTF
     tuDienTF=tuDien
     for i in range(len(dt)):
@@ -96,12 +95,38 @@ def tuDien():
     tuDienIDF=tinhIDF(dt,tuDien)
     #tinhTF_IDF
     for i in range(len(tuDienTF)):
-        tuDienTF_IDF[i]=tinhTF_IDF(tuDienTF[i],tuDienIDF)
+        tuDienTF_IDF.append(tinhTF_IDF(tuDienTF[i],tuDienIDF))
     for i in range(len(tuDienTF_IDF)):
-        tuDienTF_IDF[i]=locTF_IDF(tuDienTF_IDF[i])
+         tuDienTF_IDF[i]=(locTF_IDF(tuDienTF_IDF[i]))
+    return np.array(tuDienTF_IDF)
 
-    print(tuDienTF_IDF[0])
+def tienXuLy():
+    s=xuLyTF_IDF()
+    array1=[]
+    array2=[]
+    for cau in s:
+        for tu, chiSo in cau:
+            array1.append(tu)
+    for i in array1:
+        if i not in array2:
+            array2.append(i)
+    return np.array(array2)
 
+def chuyenSangSo(dt,tuDien):
+    k=dt.split()
+    a=[]
+    for j in k:
+        for tu in tuDien:
+            if  j==tu:
+                a.append(1)
+            elif j in tuDien:
+                a.append(0)
+    return np.array(a)
 
-    print(tinhTF_IDF(tuDienTF[0],tuDienIDF))
-tuDien()
+def dataSet():
+    dt=data.text
+    dataset=[]
+    tuDien=tienXuLy()
+    for i in range(len(dt)):
+        dataset.append(chuyenSangSo(dt[i],tuDien))
+    return dataset
