@@ -4,6 +4,8 @@ sys.path.append('../DTO/')
 import pandas as pd
 import DataAdapter as da
 import numpy as np
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
 
 data=da.dataset(2)
 
@@ -45,6 +47,8 @@ def bag_of_words(dt):
         tuDien.append(np.array(array))
     return tuDien
 
+
+
 def tinhTF(dt,tuDien):
     array=[]
     tongTu=demTu(dt)
@@ -77,7 +81,7 @@ def tinhTF_IDF(tuDienTF,tuDienIDF):
 def locTF_IDF(tuDienTF_IDF):
     array=[]
     for tu, chiSo in tuDienTF_IDF:
-        if(float(chiSo)>0.2):
+        if(float(chiSo)>0.01):
             array.append([tu,chiSo])
     return np.array(array)
 
@@ -100,6 +104,7 @@ def xuLyTF_IDF():
          tuDienTF_IDF[i]=(locTF_IDF(tuDienTF_IDF[i]))
     return np.array(tuDienTF_IDF)
 
+
 def tienXuLy():
     s=xuLyTF_IDF()
     array1=[]
@@ -112,16 +117,19 @@ def tienXuLy():
             array2.append(i)
     return np.array(array2)
 
+
+
 def chuyenSangSo(dt,tuDien):
     k=dt.split()
     a=[]
-    for j in k:
-        for tu in tuDien:
-            if  j==tu:
-                a.append(1)
-            elif j in tuDien:
-                a.append(0)
-    return np.array(a)
+    for i in tuDien:
+        a.append(0)
+    a=np.array(a)
+    for i in k:
+        for j in range(len(tuDien)):
+            if  i==tuDien[j]:
+                a[j]=1
+    return a
 
 def dataSet():
     dt=data.text
@@ -129,4 +137,14 @@ def dataSet():
     tuDien=tienXuLy()
     for i in range(len(dt)):
         dataset.append(chuyenSangSo(dt[i],tuDien))
-    return dataset
+    #rut  chieu du lieu
+    dataset=np.array(dataset)
+    sc = StandardScaler()
+    X = sc.fit_transform(dataset)
+    pca = PCA(n_components=3)
+    X_pca = pca.fit_transform(X)
+    print("\n\n\n\t\t\t Xu ly du lieu thanh cong! ")
+    return X_pca
+
+def label():
+    return data.label
