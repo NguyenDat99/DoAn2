@@ -7,7 +7,7 @@ import numpy as np
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
-data=da.dataset(2)
+
 
 def demTu(dt):
     k =dt.split(" ")
@@ -85,7 +85,7 @@ def locTF_IDF(tuDienTF_IDF):
             array.append([tu,chiSo])
     return np.array(array)
 
-def xuLyTF_IDF():
+def xuLyTF_IDF(data):
     dt=data.text
     tuDien=bag_of_words(dt)
     tuDienTF=tuDien
@@ -105,8 +105,8 @@ def xuLyTF_IDF():
     return np.array(tuDienTF_IDF)
 
 
-def tienXuLy():
-    s=xuLyTF_IDF()
+def tienXuLy(data):
+    s=xuLyTF_IDF(data)
     array1=[]
     array2=[]
     for cau in s:
@@ -131,10 +131,15 @@ def chuyenSangSo(dt,tuDien):
                 a[j]=1
     return a
 
-def dataSet():
+def dataSet(k):
+    data=[]
+    if k==1:
+        data=da.dataset(1)
+    elif k==2:
+        data=da.dataset(2)
     dt=data.text
     dataset=[]
-    tuDien=tienXuLy()
+    tuDien=tienXuLy(data)
     for i in range(len(dt)):
         dataset.append(chuyenSangSo(dt[i],tuDien))
     #rut  chieu du lieu
@@ -146,5 +151,10 @@ def dataSet():
     print("\n\n\n\t\t\t Xu ly du lieu thanh cong! ")
     return X_pca
 
-def label():
+def label(k):
+    data=[]
+    if k==1:
+        data=da.dataset(1)
+    elif k==2:
+        data=da.dataset(2)
     return data.label

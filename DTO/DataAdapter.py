@@ -26,7 +26,7 @@ def multiprocessing(k):
 
 def loaiTru(s):
     for i in s:
-        if i =='.' or i=='?' or i==',' or i=='0' or i==' ' or i=='1' or i=='2' or i=='3' or i=='4' or i=='5' or i=='6' or i=='7'or i=='8' or i=='9' or i==')'or i=='('or i=='"'or i=='='or i=='>'or i=='<'or i=='&'or i=='^'or i=='*'or i=='%'or i=='#'or i=='$'or i==''or i=='@'or i==':' or i==';':
+        if i =='.' or i=='?' or i==',' or i=='0' or i==' ' or i=='1' or i=='2' or i=='3' or i=='4' or i=='5' or i=='6' or i=='7'or i=='8' or i=='9' or i==')'or i=='('or i=='"'or i=='='or i=='>'or i=='<'or i=='&'or i=='^'or i=='*'or i=='%'or i=='#'or i=='$'or i==''or i=='@'or i==':' or i==';'or i=='-'or i=='+'or i=='^'or i=='&'or i=='|'or i=='{'or i=='}':
             return 0
     return 1
 
@@ -78,5 +78,15 @@ ExCSV()
 class dataset:
     def __init__(seft,k):
         data=multiprocessing(k)
-        seft.text=data[0]
-        seft.label=data[1]
+        if k==1:
+            dt1=[]
+            dt2=[]
+            for i in range(len(data[0])):
+                if lamSachChuoi(data[0][i])!=None:
+                    dt1.append(lamSachChuoi(data[0][i]))
+                    dt2.append(data[1][i])
+            seft.text=dt1
+            seft.label=dt2
+        elif k==2:
+            seft.text=data[0]
+            seft.label=data[1]
