@@ -6,6 +6,11 @@ csv2=pd.read_csv('../DTO/dataset/CSV/data2.csv',encoding='utf-8')
 from multiprocessing.dummy import Pool as ThreadPool
 from pyvi import ViTokenizer, ViPosTagger
 
+
+kichCoTapTrain=25
+kichCoTapTest=25
+
+
 #67190 Câu
 
 def getFeature1(name):
@@ -55,14 +60,14 @@ def lamSachChuoi(text):
 
 def ExCSV():
     dt=[]
-    for i in range(1,25): #35473
+    for i in range(1,kichCoTapTrain): #35473
         try:
             file=open('../DTO/dataset/pos/%s.txt'%i,"r")
             dt.append([lamSachChuoi(lamSachChuoi(file.read())),1])
             file.close()
         except:
             a=2
-    for i in range(1,25):#29246
+    for i in range(1,kichCoTapTest):#29246
         try:
             file=open('../DTO/dataset/neg/%s.txt'%i,"r")
             dt.append([lamSachChuoi(lamSachChuoi(file.read())),0])
@@ -74,7 +79,6 @@ def ExCSV():
     df.to_csv('../DTO/dataset/CSV/data2.csv',encoding='utf-8',index=False)
     #lam sach lai
 
-ExCSV()
 class dataset:
     def __init__(seft,k):
         data=multiprocessing(k)

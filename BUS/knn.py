@@ -8,9 +8,6 @@ from sklearn.metrics import precision_score
 from sklearn.model_selection import train_test_split
 
 
-
-
-
 def Knn(k):
     data=[]
     label=[]
@@ -27,5 +24,3 @@ def Knn(k):
     recall= recall_score(y_test,clf.predict(x_test), average='weighted')
     F=(2*precision*recall)/(precision+recall)
     return F
-
-print(Knn(2))

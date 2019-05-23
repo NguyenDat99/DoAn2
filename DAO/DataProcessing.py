@@ -6,7 +6,7 @@ import DataAdapter as da
 import numpy as np
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
-
+import os
 
 
 def demTu(dt):
@@ -132,6 +132,7 @@ def chuyenSangSo(dt,tuDien):
     return a
 
 def dataSet(k):
+    da.ExCSV()
     data=[]
     if k==1:
         data=da.dataset(1)
@@ -148,7 +149,7 @@ def dataSet(k):
     X = sc.fit_transform(dataset)
     pca = PCA(n_components=3)
     X_pca = pca.fit_transform(X)
-    print("\n\n\n\t\t\t Xu ly du lieu thanh cong! ")
+    os.system('cls' if os.name == 'nt' else 'clear')
     return X_pca
 
 def label(k):
